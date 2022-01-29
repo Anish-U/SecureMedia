@@ -1,0 +1,13 @@
+{
+  "name": "secure-media",
+  "version": "1.0.0",
+  "description": "SecureMedia - Secure Social Media Application",
+  "scripts": {
+    "client": "cd ./client/  && npm run start",
+    "server": "cd ./server/  && npm run start",
+    "devServer": "cd ./server/ && npm run devStart"
+  },
+  "author": "Ummenthala Anish <ummenthala.anish@gmail.com>",
+  "license": "ISC",
+  "main": "index.js"
+}

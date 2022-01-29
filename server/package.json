@@ -1,0 +1,17 @@
+{
+  "name": "secure-media-server",
+  "version": "1.0.0",
+  "description": "Server API for SecureMedia Application",
+  "main": "server.js",
+  "scripts": {
+    "devStart": "nodemon ./src/server.js",
+    "start": "node ./src/server.js"
+  },
+  "author": "Ummenthala Anish <ummenthala.anish@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^14.3.2",
+    "express": "^4.17.2",
+    "mongoose": "^6.1.8"
+  }
+}
