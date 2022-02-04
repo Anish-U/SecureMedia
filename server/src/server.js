@@ -18,6 +18,7 @@ const { initDB } = require("./config/database");
 
 // Importing routers
 const authRouter = require("./api/routes/auth");
+const userRouter = require("./api/routes/users");
 
 /*
 		MOUNTING MIDDLEWARES FUNCTIONS
@@ -44,6 +45,7 @@ initDB();
 */
 
 app.use("/api/auth", authRouter);
+app.use("/api/user", userRouter);
 
 //Serving and listening at port
 app.listen(port, () => {
