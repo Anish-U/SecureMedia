@@ -7,7 +7,7 @@ const User = require("../models/User");
 
 // Function to register user
 const registerUser = async (req, res) => {
-  const { username, email, password } = req.body;
+  const { username, email, password, gender } = req.body;
 
   try {
     // Generating new hashed password
@@ -18,6 +18,7 @@ const registerUser = async (req, res) => {
       username,
       email,
       password: hashedPassword,
+      gender
     });
 
     // Save user to mongoDB
@@ -37,15 +38,15 @@ const registerUser = async (req, res) => {
 
 // Function to login user
 const loginUser = async (req, res) => {
-  const { username, password } = req.body;
+  const { email, password } = req.body;
 
   try {
-    // Check if username is present
-    const user = await User.findOne({ username: username });
+    // Check if email is present
+    const user = await User.findOne({ email: email });
 
-    // If no user with given username is present
+    // If no user with given email is present
     if (!user) {
-      res.status(400).json({ message: "Invalid username* / password" });
+      res.status(400).json({ message: "Invalid email* / password" });
       return;
     }
 
@@ -54,19 +55,20 @@ const loginUser = async (req, res) => {
 
     // If wrong password
     if (!passCheck) {
-      res.status(400).json({ message: "Invalid username / password*" });
+      res.status(400).json({ message: "Invalid email / password*" });
       return;
     }
 
     const jwtSecret = process.env.JWT_SECRET;
 
     const token = jwt.sign(
-      { _id: user._id, username: user.username },
+      { _id: user._id, username: user.username, email: user.email },
       jwtSecret,
       { expiresIn: "1d" }
     );
 
-    res.status(200).json(token);
+    // res.status(200).json(token);
+    res.status(200).json(user);
   } catch (err) {
     console.log(err);
     res.status(500).json({ error: "Server Error" });

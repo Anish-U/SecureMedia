@@ -16,6 +16,7 @@ const {
   deletePost,
   likeDislikePost,
   getTimelinePosts,
+  getUserAllPosts,
 } = require("../controllers/postController");
 
 // Create a post
@@ -33,7 +34,10 @@ router.delete("/:id", deletePost);
 // Like / Dislike a post
 router.put("/:id/like", likeDislikePost);
 
+// Get all user's posts
+router.get("/user/:username", getUserAllPosts);
+
 // Get timeline posts
-router.get("/timeline/all", getTimelinePosts);
+router.get("/timeline/:userId", getTimelinePosts);
 
 module.exports = router;

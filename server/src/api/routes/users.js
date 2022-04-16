@@ -15,7 +15,7 @@ const {
 const { followUser, unfollowUser } = require("../controllers/followController");
 
 // Get a user
-router.get("/:id", getUser);
+router.get("/", getUser);
 
 // PUT api/user/:id
 router.put("/:id", updateUser);

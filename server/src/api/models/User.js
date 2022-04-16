@@ -20,9 +20,28 @@ const UserSchema = new mongoose.Schema(
       required: true,
       min: 6,
     },
+    gender: {
+      type: String,
+      required: true,
+      enum: ["Male", "Female", "Others"],
+    },
+    relationship: {
+      type: String,
+      required: true,
+      enum: ["Married", "Single"],
+      default: "Single",
+    },
     profilePicture: {
       type: String,
       default: "",
+    },
+    coverPicture: {
+      type: String,
+      default: "",
+    },
+    city: {
+      type: String,
+      max: 50,
     },
     followers: {
       type: Array,

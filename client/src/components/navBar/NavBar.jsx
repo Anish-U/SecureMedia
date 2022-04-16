@@ -1,8 +1,16 @@
 import "./navBar.css";
+
 import { Search, Person, Chat, Notifications } from "@material-ui/icons";
+import { useContext } from "react";
 import { Link } from "react-router-dom";
 
+import { AuthContext } from "../../contexts/AuthContext";
+
 const NavBar = () => {
+  const { user } = useContext(AuthContext);
+  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+  console.log(user);
+
   return (
     <div className="navBarContainer">
       <div className="navBarLeft">
@@ -38,11 +46,17 @@ const NavBar = () => {
             <span className="navBarIconBadge">1</span>
           </div>
         </div>
-        <img
-          src="/assets/images/avatars/female/female1.png"
-          alt=""
-          className="navBarImg"
-        />
+        <Link to={`/profile/${user.username}`}>
+          <img
+            src={
+              user.profilePicture
+                ? PF + user.profilePicture 
+                : PF + "images/avatars/noAvatar.png"
+            }
+            alt=""
+            className="navBarImg"
+          />
+        </Link>
       </div>
     </div>
   );

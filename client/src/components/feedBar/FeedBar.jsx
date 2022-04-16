@@ -3,23 +3,38 @@ import Post from "../post/Post";
 
 import "./feedBar.css";
 
-const feedBar = () => {
+import { useState, useEffect, useContext } from "react";
+import axios from "axios";
+
+import { AuthContext } from "../../contexts/AuthContext";
+
+const FeedBar = ({ username }) => {
+  const apiURL = process.env.REACT_APP_API_URL;
+  const [posts, setPosts] = useState([]);
+
+  const { user } = useContext(AuthContext);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      const res = username
+        ? await axios.get(`${apiURL}post/user/${username}`)
+        : await axios.get(`${apiURL}post/timeline/${user._id}`);
+      console.log(res.data);
+      setPosts(res.data);
+    };
+    fetchPosts();
+  }, [username, user]);
+
   return (
     <div className="feedBar">
       <div className="feedBarWrapper">
         <Share />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
+        {posts.map((p) => (
+          <Post key={p._id} post={p} />
+        ))}
       </div>
     </div>
   );
 };
 
-export default feedBar;
+export default FeedBar;

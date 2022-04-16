@@ -126,11 +126,27 @@ const likeDislikePost = async (req, res) => {
   }
 };
 
+// Function to get all user's posts
+const getUserAllPosts = async (req, res) => {
+  try {
+    // Find current user
+    const currentUser = await User.findOne({ username: req.params.username });
+
+    // Getting all current user posts
+    const userPosts = await Post.find({ userId: currentUser._id });
+
+    res.status(200).json(userPosts);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "Server Error" });
+  }
+};
+
 // Function to get all timeline posts
 const getTimelinePosts = async (req, res) => {
   try {
     // Find current user
-    const currentUser = await User.findById(req.body.userId);
+    const currentUser = await User.findById(req.params.userId);
 
     // Getting all current user posts
     const userPosts = await Post.find({ userId: currentUser._id });
@@ -158,5 +174,6 @@ module.exports = {
   updatePost,
   deletePost,
   likeDislikePost,
+  getUserAllPosts,
   getTimelinePosts,
 };
