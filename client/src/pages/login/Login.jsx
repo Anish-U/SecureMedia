@@ -12,7 +12,7 @@ const Login = () => {
   const email = useRef();
   const password = useRef();
 
-  const { user, isFetching, error, dispatch } = useContext(AuthContext);
+  const { isFetching, dispatch } = useContext(AuthContext);
 
   const handleClick = (e) => {
     e.preventDefault();
@@ -59,7 +59,7 @@ const Login = () => {
               )}
             </button>
             <span className="loginForgot">Forgot Password?</span>
-            <Link to={"/register"} style={{textAlign: "center"}}>
+            <Link to={"/register"} style={{ textAlign: "center" }}>
               <button className="loginRegisterButton">
                 {isFetching ? (
                   <CircularProgress color="white" size="20px" />

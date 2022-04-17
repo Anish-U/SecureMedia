@@ -12,6 +12,9 @@ import {
 } from "@material-ui/icons";
 
 const LeftBar = () => {
+  
+  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+
   return (
     <div className="leftBar">
       <div className="leftBarWrapper">
@@ -58,47 +61,7 @@ const LeftBar = () => {
         <ul className="leftBarFriendList">
           <li className="leftBarFriend">
             <img
-              src="/assets/images/avatars/female/female1.png"
-              alt=""
-              className="leftBarFriendImg"
-            />
-            <span className="leftBarFriendName">Jane Done</span>
-          </li>
-          <li className="leftBarFriend">
-            <img
-              src="/assets/images/avatars/female/female1.png"
-              alt=""
-              className="leftBarFriendImg"
-            />
-            <span className="leftBarFriendName">Jane Done</span>
-          </li>
-          <li className="leftBarFriend">
-            <img
-              src="/assets/images/avatars/female/female1.png"
-              alt=""
-              className="leftBarFriendImg"
-            />
-            <span className="leftBarFriendName">Jane Done</span>
-          </li>
-          <li className="leftBarFriend">
-            <img
-              src="/assets/images/avatars/female/female1.png"
-              alt=""
-              className="leftBarFriendImg"
-            />
-            <span className="leftBarFriendName">Jane Done</span>
-          </li>
-          <li className="leftBarFriend">
-            <img
-              src="/assets/images/avatars/female/female1.png"
-              alt=""
-              className="leftBarFriendImg"
-            />
-            <span className="leftBarFriendName">Jane Done</span>
-          </li>
-          <li className="leftBarFriend">
-            <img
-              src="/assets/images/avatars/female/female1.png"
+              src={PF + "avatars/group/group1.png"}
               alt=""
               className="leftBarFriendImg"
             />

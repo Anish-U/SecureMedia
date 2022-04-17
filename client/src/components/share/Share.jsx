@@ -22,7 +22,7 @@ const Share = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    
+
     const newPost = {
       userId: user._id,
       desc: desc.current.value,
@@ -30,19 +30,23 @@ const Share = () => {
 
     if (file) {
       const data = new FormData();
-      const fileName = Date.now() + file.name;
+      const fileName = Date.now() + "." + file.name.split(".").pop();
       data.append("name", fileName);
       data.append("file", file);
       newPost.img = fileName;
-      console.log(newPost);
+      // console.log(newPost);
       try {
-        await axios.post("/upload", data);
-      } catch (err) {}
+        await axios.post(`${apiURL}upload/`, data);
+      } catch (err) {
+        console.log(err);
+      }
     }
     try {
-      await axios.post("/posts", newPost);
-      window.location.reload();
-    } catch (err) {}
+      await axios.post(`${apiURL}post/`, newPost);
+      // window.location.reload();
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -53,7 +57,7 @@ const Share = () => {
             src={
               user.profilePicture
                 ? PF + user.profilePicture
-                : PF + "images/avatars/noAvatar.png"
+                : PF + "avatars/noAvatar.png"
             }
             alt=""
             className="shareProfileImg"
@@ -100,7 +104,9 @@ const Share = () => {
               <span className="shareOptionText">Feelings</span>
             </div>
           </div>
-          <button className="shareButton">Share</button>
+          <button className="shareButton" type="submit">
+            Share
+          </button>
         </form>
       </div>
     </div>

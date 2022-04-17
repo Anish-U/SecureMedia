@@ -9,6 +9,7 @@ const {
   getUser,
   updateUser,
   deleteUser,
+  getFriends,
 } = require("../controllers/userController");
 
 // Importing follow controller
@@ -16,6 +17,9 @@ const { followUser, unfollowUser } = require("../controllers/followController");
 
 // Get a user
 router.get("/", getUser);
+
+// Get friends
+router.get("/friends/:userId", getFriends);
 
 // PUT api/user/:id
 router.put("/:id", updateUser);

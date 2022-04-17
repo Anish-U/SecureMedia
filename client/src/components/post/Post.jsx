@@ -7,6 +7,7 @@ import axios from "axios";
 import { format } from "timeago.js";
 
 import { AuthContext } from "../../contexts/AuthContext";
+
 const Post = ({ post }) => {
   const [like, setLike] = useState(post.likes.length);
   const [isLiked, setIsLiked] = useState(false);
@@ -19,12 +20,12 @@ const Post = ({ post }) => {
 
   useEffect(() => {
     setIsLiked(post.likes.includes(currentUser._id));
-  }, [currentUser._id, post.likes]);
+  }, [currentUser, post.likes]);
 
   useEffect(() => {
     const fetchUser = async () => {
       const res = await axios.get(`${apiURL}user?userId=${post.userId}`);
-      console.log(res.data);
+      // console.log(res.data);
       setUser(res.data);
     };
     fetchUser();
@@ -48,7 +49,7 @@ const Post = ({ post }) => {
                 src={
                   user.profilePicture
                     ? PF + user.profilePicture
-                    : PF + "images/avatars/noAvatar.png"
+                    : PF + "avatars/noAvatar.png"
                 }
                 alt=""
                 className="postProfileImg"
@@ -65,14 +66,14 @@ const Post = ({ post }) => {
           <span className="postText">{post.desc}</span>
           <img
             className="postImg"
-            src={PF + "images/posts/" + post.img}
+            src={PF + "posts/" + post.img}
             alt=""
           />
         </div>
         <div className="postBottom">
           <div className="postBottomLeft">
             <img
-              src={`${PF}images/heart.png`}
+              src={`${PF}heart.png`}
               alt=""
               onClick={likeHandler}
               className="likeIcon"

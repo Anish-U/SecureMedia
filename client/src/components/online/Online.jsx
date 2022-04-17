@@ -1,12 +1,14 @@
 import "./online.css";
 
 const Online = () => {
+  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+
   return (
     <li className="rightBarFriend">
       <div className="rightBarProfileImgContainer">
         <img
           className="rightBarProfileImg"
-          src="/assets/images/avatars/group/group1.png"
+          src={PF + "avatars/group/group3.png"}
           alt=""
         />
         <span className="rightBarOnline"></span>

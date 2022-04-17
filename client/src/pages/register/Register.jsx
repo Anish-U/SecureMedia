@@ -13,6 +13,8 @@ const Register = () => {
   const confirmPassword = useRef();
   const history = useNavigate();
 
+  const apiURL = process.env.REACT_APP_API_URL;
+
   const handleClick = async (e) => {
     e.preventDefault();
     if (confirmPassword.current.value !== password.current.value) {
@@ -25,7 +27,7 @@ const Register = () => {
         gender: gender.current.value,
       };
       try {
-        const res = await axios.post("/auth/register", user);
+        const res = await axios.post(`${apiURL}auth/register`, user);
         console.log(res);
         history("/login");
       } catch (err) {
@@ -75,7 +77,7 @@ const Register = () => {
               required
             />
 
-            <select className="registerInput" ref={gender}>
+            <select className="registerInput" required ref={gender}>
               <option value="Male">Male</option>
               <option value="Female">Female</option>
               <option value="Others">Others</option>

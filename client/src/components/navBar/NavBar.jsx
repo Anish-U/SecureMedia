@@ -22,7 +22,7 @@ const NavBar = () => {
         <div className="searchBar">
           <Search className="searchIcon" />
           <input
-            placeholder="Search for friends, posts or videos"
+            placeholder="Search for friends"
             className="searchInput"
           />
         </div>
@@ -50,8 +50,8 @@ const NavBar = () => {
           <img
             src={
               user.profilePicture
-                ? PF + user.profilePicture 
-                : PF + "images/avatars/noAvatar.png"
+                ? PF + user.profilePicture
+                : PF + "avatars/noAvatar.png"
             }
             alt=""
             className="navBarImg"

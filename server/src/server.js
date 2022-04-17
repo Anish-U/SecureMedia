@@ -1,9 +1,10 @@
 // Importing npm modules
 const express = require("express");
 const dotenv = require("dotenv");
-const helmet = require("helmet");
-const morgan = require("morgan");
 const cors = require("cors");
+
+const path = require("path");
+const multer = require("multer");
 
 // Express app instance
 const app = express();
@@ -33,24 +34,41 @@ app.use(express.json());
 // Disabling X-powered-by for security reasons
 app.disable("x-powered-by");
 
-// For securing app by setting HTTP headers
-app.use(helmet());
+// Enabling CORS
+// app.use(cors());
 
-// Request logger middleware
-app.use(morgan("common"));
-
-app.use(cors());
-
+app.options("*", cors());
 // MongoDB Connection
 initDB();
 
 /*
-		HANDLING ROUTES
+HANDLING ROUTES
 */
+
+app.use("/images", express.static(path.join(__dirname, "../public/images")));
 
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
 app.use("/api/post", postRouter);
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+		cb(null, "public/images/posts/");
+  },
+  filename: (req, file, cb) => {
+    cb(null, req.body.name);
+  },
+});
+
+const upload = multer({ storage: storage });
+
+app.post("/api/upload/", upload.single("file"), (req, res) => {
+  try {
+    return res.status(200).json("File uploaded successfully");
+  } catch (error) {
+    console.error(error);
+  }
+});
 
 //Serving and listening at port
 app.listen(port, () => {

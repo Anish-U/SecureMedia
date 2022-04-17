@@ -19,22 +19,26 @@ const FeedBar = ({ username }) => {
       const res = username
         ? await axios.get(`${apiURL}post/user/${username}`)
         : await axios.get(`${apiURL}post/timeline/${user._id}`);
-      console.log(res.data);
-      setPosts(res.data);
+      // console.log(res.data);
+      setPosts(
+        res.data.sort((p1, p2) => {
+          return new Date(p2.createdAt) - new Date(p1.createdAt);
+        })
+      );
     };
     fetchPosts();
-  }, [username, user]);
+  }, [username, user, apiURL]);
 
   return (
     <div className="feedBar">
       <div className="feedBarWrapper">
-        <Share />
+        {(!username ||username === user.username) && <Share />}
         {posts.map((p) => (
           <Post key={p._id} post={p} />
         ))}
       </div>
     </div>
   );
-};
+}; 
 
 export default FeedBar;

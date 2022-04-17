@@ -12,13 +12,13 @@ const Profile = () => {
 
   const [user, setUser] = useState({});
   const username = useParams().username;
-  
+
   const apiURL = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     const fetchUser = async () => {
       const res = await axios.get(`${apiURL}user?username=${username}`);
-      console.log(res.data);
+      // console.log(res.data);
       setUser(res.data);
     };
     fetchUser();
@@ -34,13 +34,19 @@ const Profile = () => {
             <div className="profileCover">
               <img
                 className="profileCoverImg"
-                src={user.coverPicture || `${PF}images/posts/post2.jpeg`}
+                src={
+                  user.coverPicture
+                    ? PF + user.coverPicture
+                    : PF + "noCover.png"
+                }
                 alt=""
               />
               <img
                 className="profileUserImg"
                 src={
-                  user.profilePicture || `${PF}images/avatars/male/male7.png`
+                  user.profilePicture
+                    ? PF + user.profilePicture
+                    : PF + "avatars/noAvatar.png"
                 }
                 alt=""
               />
