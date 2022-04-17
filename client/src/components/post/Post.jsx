@@ -13,6 +13,8 @@ const Post = ({ post }) => {
   const [isLiked, setIsLiked] = useState(false);
   const [user, setUser] = useState({});
 
+  const [options, setOptions] = useState(false);
+
   const apiURL = process.env.REACT_APP_API_URL;
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
 
@@ -39,6 +41,10 @@ const Post = ({ post }) => {
     setIsLiked(!isLiked);
   };
 
+  const optionHandler = () => {
+    setOptions(!options);
+  };
+
   return (
     <div className="post">
       <div className="postWrapper">
@@ -59,29 +65,37 @@ const Post = ({ post }) => {
             <span className="postDate">{format(post.createdAt)}</span>
           </div>
           <div className="postTopRight">
-            <MoreVert />
+            {currentUser._id === post.userId && (
+              <MoreVert onClick={optionHandler} />
+            )}
+            {options && (
+              <div className="postOptions">
+                <div className="postOption">Edit</div>
+                <div className="postOption">Delete</div>
+              </div>
+            )}
           </div>
         </div>
         <div className="postCenter">
           <span className="postText">{post.desc}</span>
-          <img
-            className="postImg"
-            src={PF + "posts/" + post.img}
-            alt=""
-          />
+          {post.img ? (
+            <img className="postImg" src={PF + "posts/" + post.img} alt="" />
+          ) : (
+            ""
+          )}
         </div>
         <div className="postBottom">
           <div className="postBottomLeft">
             <img
-              src={`${PF}heart.png`}
+              src={isLiked ? `${PF}heart.png` : `${PF}heart-outline.png` }
               alt=""
               onClick={likeHandler}
               className="likeIcon"
             />
-            <span className="postLikeCounter">{like + " people like it"}</span>
+            <span className="postLikeCounter">{isLiked ? `You and ${like - 1} others like this post` : `${like} likes`}</span>
           </div>
           <div className="postBottomRight">
-            <span className="postCommentText">15 comments</span>
+            {/* <span className="postCommentText">15 comments</span> */}
           </div>
         </div>
       </div>

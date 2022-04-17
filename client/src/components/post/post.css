@@ -62,8 +62,8 @@
 }
 
 .likeIcon {
-  width: 32px;
-  height: 32px;
+  width: 24px;
+  height: 24px;
   margin-right: 5px;
   cursor: pointer;
 }
@@ -76,4 +76,30 @@
   cursor: pointer;
   border-bottom: 1px dashed gray;
   font-size: 15px;
+}
+
+.postTopRight {
+  position: relative;
+}
+
+.postOptions {
+  position: absolute;
+  background-color: #f2f2f2;
+  -webkit-box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+  box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+  border-radius: 10%;
+  /* padding: 1rem; */
+}
+
+.postOption {
+  font-size: 14px;
+  font-weight: 500;
+  padding: 10px;
+  transition: all 200ms ease-in-out;
+  border-radius: 10%;
+  cursor: pointer;
+}
+
+.postOption:hover {
+  background-color: #b1b1b1;
 }

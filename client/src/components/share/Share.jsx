@@ -1,11 +1,5 @@
 import "./share.css";
-import {
-  Label,
-  PermMedia,
-  Room,
-  EmojiEmotions,
-  Cancel,
-} from "@material-ui/icons";
+import { PermMedia, Cancel } from "@material-ui/icons";
 import { useContext, useRef, useState } from "react";
 import axios from "axios";
 
@@ -88,21 +82,6 @@ const Share = () => {
                 onChange={(e) => setFile(e.target.files[0])}
               />
             </label>
-            <div className="shareOption">
-              <Label htmlColor="red" className="shareIcon"></Label>
-              <span className="shareOptionText">Tag</span>
-            </div>
-            <div className="shareOption">
-              <Room htmlColor="blue" className="shareIcon"></Room>
-              <span className="shareOptionText">Location</span>
-            </div>
-            <div className="shareOption">
-              <EmojiEmotions
-                htmlColor="goldenrod"
-                className="shareIcon"
-              ></EmojiEmotions>
-              <span className="shareOptionText">Feelings</span>
-            </div>
           </div>
           <button className="shareButton" type="submit">
             Share
