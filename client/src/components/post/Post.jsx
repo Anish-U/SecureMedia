@@ -45,6 +45,27 @@ const Post = ({ post }) => {
     setOptions(!options);
   };
 
+  const deleteHandler = async () => {
+    if (window.confirm("Do you really want to delete this post ?")) {
+      try {
+        const data = {
+          userId: user._id,
+        };
+        await axios.delete(`${apiURL}post/${post._id}`, {
+          data: data,
+        });
+
+        window.location.reload();
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  };
+
+  const editHandler = () => {
+    alert("Edit Clicked" + post._id);
+  };
+
   return (
     <div className="post">
       <div className="postWrapper">
@@ -70,8 +91,12 @@ const Post = ({ post }) => {
             )}
             {options && (
               <div className="postOptions">
-                <div className="postOption">Edit</div>
-                <div className="postOption">Delete</div>
+                <div className="postOption" onClick={editHandler}>
+                  Edit
+                </div>
+                <div className="postOption" onClick={deleteHandler}>
+                  Delete
+                </div>
               </div>
             )}
           </div>
@@ -79,7 +104,7 @@ const Post = ({ post }) => {
         <div className="postCenter">
           <span className="postText">{post.desc}</span>
           {post.img ? (
-            <img className="postImg" src={PF + "posts/" + post.img} alt="" />
+            <img className="postImg" src={`${PF}posts/${post.img}`} alt="" />
           ) : (
             ""
           )}
@@ -87,12 +112,16 @@ const Post = ({ post }) => {
         <div className="postBottom">
           <div className="postBottomLeft">
             <img
-              src={isLiked ? `${PF}heart.png` : `${PF}heart-outline.png` }
+              src={isLiked ? `${PF}heart.png` : `${PF}heart-outline.png`}
               alt=""
               onClick={likeHandler}
               className="likeIcon"
             />
-            <span className="postLikeCounter">{isLiked ? `You and ${like - 1} others like this post` : `${like} likes`}</span>
+            <span className="postLikeCounter">
+              {isLiked
+                ? `You and ${like - 1} others like this post`
+                : `${like} likes`}
+            </span>
           </div>
           <div className="postBottomRight">
             {/* <span className="postCommentText">15 comments</span> */}
