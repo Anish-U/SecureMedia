@@ -1,6 +1,6 @@
 import "./navBar.css";
 
-import { Search, Person, Chat, Notifications } from "@material-ui/icons";
+import { Search, Person, Chat, ExitToApp, Settings, Group } from "@material-ui/icons";
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 
@@ -21,10 +21,7 @@ const NavBar = () => {
       <div className="navBarCenter">
         <div className="searchBar">
           <Search className="searchIcon" />
-          <input
-            placeholder="Search for friends"
-            className="searchInput"
-          />
+          <input placeholder="Search for friends" className="searchInput" />
         </div>
       </div>
       <div className="navBarRight">
@@ -34,7 +31,7 @@ const NavBar = () => {
         </div>
         <div className="navBarIcons">
           <div className="navBarIconItem">
-            <Person />
+            <Group />
             <span className="navBarIconBadge">1</span>
           </div>
           <div className="navBarIconItem">
@@ -42,8 +39,10 @@ const NavBar = () => {
             <span className="navBarIconBadge">2</span>
           </div>
           <div className="navBarIconItem">
-            <Notifications />
-            <span className="navBarIconBadge">1</span>
+            <Settings />
+          </div>
+          <div className="navBarIconItem">
+            <ExitToApp />
           </div>
         </div>
         <Link to={`/profile/${user.username}`}>
