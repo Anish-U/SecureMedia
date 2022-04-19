@@ -22,6 +22,8 @@ const { initDB } = require("./config/database");
 const authRouter = require("./api/routes/auth");
 const userRouter = require("./api/routes/users");
 const postRouter = require("./api/routes/posts");
+const messageRouter = require("./api/routes/messages");
+const conversationRouter = require("./api/routes/conversations");
 
 /*
 		MOUNTING MIDDLEWARES FUNCTIONS
@@ -50,10 +52,12 @@ app.use("/images", express.static(path.join(__dirname, "../public/images")));
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
 app.use("/api/post", postRouter);
+app.use("/api/message", messageRouter);
+app.use("/api/conversation", conversationRouter);
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-		cb(null, "public/images/posts/");
+    cb(null, "public/images/posts/");
   },
   filename: (req, file, cb) => {
     cb(null, req.body.name);

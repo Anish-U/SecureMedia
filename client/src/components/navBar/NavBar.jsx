@@ -1,6 +1,14 @@
 import "./navBar.css";
 
-import { Search, Person, Chat, ExitToApp, Settings, Group } from "@material-ui/icons";
+import {
+  Search,
+  Person,
+  Chat,
+  ExitToApp,
+  Settings,
+  Home,
+  Group,
+} from "@material-ui/icons";
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 
@@ -9,7 +17,6 @@ import { AuthContext } from "../../contexts/AuthContext";
 const NavBar = () => {
   const { user } = useContext(AuthContext);
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
-  console.log(user);
 
   return (
     <div className="navBarContainer">
@@ -25,24 +32,51 @@ const NavBar = () => {
         </div>
       </div>
       <div className="navBarRight">
-        <div className="navBarLinks">
-          <span className="navBarLink">Home</span>
-          <span className="navBarLink">Timeline</span>
-        </div>
         <div className="navBarIcons">
           <div className="navBarIconItem">
-            <Group />
-            <span className="navBarIconBadge">1</span>
+            <Link to="/" style={{ textDecoration: "none", color: "white" }}>
+              <Home />
+            </Link>
           </div>
           <div className="navBarIconItem">
-            <Chat />
-            <span className="navBarIconBadge">2</span>
+            <Link
+              to="/messenger"
+              style={{ textDecoration: "none", color: "white" }}
+            >
+              <Group />
+            </Link>
           </div>
           <div className="navBarIconItem">
-            <Settings />
+            <Link
+              to="/messenger"
+              style={{ textDecoration: "none", color: "white" }}
+            >
+              <Chat />
+            </Link>
           </div>
           <div className="navBarIconItem">
-            <ExitToApp />
+            <Link
+              to="/messenger"
+              style={{ textDecoration: "none", color: "white" }}
+            >
+              <Chat />
+            </Link>
+          </div>
+          <div className="navBarIconItem">
+            <Link
+              to="/settings"
+              style={{ textDecoration: "none", color: "white" }}
+            >
+              <Settings />
+            </Link>
+          </div>
+          <div className="navBarIconItem">
+            <Link
+              to="/logout"
+              style={{ textDecoration: "none", color: "white" }}
+            >
+              <ExitToApp />
+            </Link>
           </div>
         </div>
         <Link to={`/profile/${user.username}`}>

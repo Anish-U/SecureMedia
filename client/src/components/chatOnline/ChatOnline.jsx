@@ -1,6 +1,6 @@
 import "./chatOnline.css";
 
-const ChatOnline = () => {
+const ChatOnline = ({ user }) => {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
 
   return (
@@ -8,13 +8,16 @@ const ChatOnline = () => {
       <div className="chatOnlineFriend">
         <div className="chatOnlineImgContainer">
           <img
-            src={PF + "avatars/noAvatar.png"}
+            src={
+              user?.profilePicture
+                ? PF + user?.profilePicture
+                : PF + "avatars/noAvatar.png"
+            }
             alt=""
             className="chatOnlineImg"
           />
-          <div className="chatOnlineBadge"></div>
         </div>
-        <div className="chatOnlineName">John Doe</div>
+        <div className="chatOnlineName">{user?.username}</div>
       </div>
     </div>
   );
