@@ -3,7 +3,7 @@ import "./conversation.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-const Conversation = ({ conversation, isCurrent, currentUser }) => {
+const Conversation = ({ conversation, isCurrent, currentUser, isGroup }) => {
   const [user, setUser] = useState(null);
 
   const apiURL = process.env.REACT_APP_API_URL;
@@ -29,14 +29,20 @@ const Conversation = ({ conversation, isCurrent, currentUser }) => {
     <div className={isCurrent ? "conversation current" : "conversation"}>
       <img
         src={
-          user?.profilePicture
+          isGroup
+            ? conversation?.groupPicture
+              ? PF + conversation.groupPicture
+              : PF + "avatars/noAvatarGroup.png"
+            : user?.profilePicture
             ? PF + user.profilePicture
             : PF + "avatars/noAvatar.png"
         }
         alt=""
         className="conversationImg"
       />
-      <span className="conversationName">{user?.username}</span>
+      <span className="conversationName">
+        {isGroup ? conversation.groupName : user?.username}
+      </span>
     </div>
   );
 };

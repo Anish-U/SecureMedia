@@ -40,7 +40,7 @@ const NavBar = () => {
           </div>
           <div className="navBarIconItem">
             <Link
-              to="/messenger"
+              to="/group"
               style={{ textDecoration: "none", color: "white" }}
             >
               <Group />

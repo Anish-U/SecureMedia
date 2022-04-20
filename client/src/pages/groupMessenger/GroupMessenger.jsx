@@ -1,4 +1,4 @@
-import "./messenger.css";
+import "./groupMessenger.css";
 
 import { useState, useEffect, useContext, useRef } from "react";
 import axios from "axios";
@@ -6,16 +6,14 @@ import axios from "axios";
 import NavBar from "../../components/navBar/NavBar";
 import Conversation from "../../components/conversation/Conversation";
 import Message from "../../components/message/Message";
-import ChatOnline from "../../components/chatOnline/ChatOnline";
 import { AuthContext } from "../../contexts/AuthContext";
+import GroupMember from "../../components/groupMember/GroupMember";
 
-const Messenger = () => {
+const GroupMessenger = () => {
   const [conversations, setConversations] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
-  const [allFriends, setAllFriends] = useState([]);
-  const [selectFriend, setSelectFriend] = useState(null);
 
   const { user } = useContext(AuthContext);
   const scrollRef = useRef();
@@ -30,8 +28,7 @@ const Messenger = () => {
   useEffect(() => {
     const getConversations = async () => {
       try {
-        const res = await axios.get(`${apiURL}conversation/${user?._id}`);
-        // console.log(res.data);
+        const res = await axios.get(`${apiURL}conversation/group/${user?._id}`);
         setConversations(res.data);
       } catch (err) {
         console.log(err);
@@ -41,13 +38,10 @@ const Messenger = () => {
   }, [user, apiURL]);
 
   useEffect(() => {
-
     const getMessages = async () => {
       try {
         const res = await axios.get(`${apiURL}message/${currentChat?._id}`);
-        // console.log(res.data);
         setMessages(res.data);
-
       } catch (err) {
         console.log(err);
       }
@@ -55,19 +49,6 @@ const Messenger = () => {
 
     getMessages();
   }, [currentChat, apiURL, user]);
-
-  useEffect(() => {
-    const getFriends = async () => {
-      try {
-        const res = await axios.get(`${apiURL}user/friends/${user?._id}`);
-        console.log(res.data);
-        setAllFriends(res.data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    getFriends();
-  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -87,31 +68,6 @@ const Messenger = () => {
     }
   };
 
-  useEffect(() => {
-    const openConversation = async () => {
-      try {
-        const res = await axios.get(
-          `${apiURL}conversation/${user?._id}/${selectFriend?._id}`
-        );
-        if (res.data.length) {
-          setCurrentChat(res.data[0]);
-        } else {
-          const conversation = {
-            senderId: user._id,
-            receiverId: selectFriend._id,
-          };
-          const res = await axios.post(`${apiURL}conversation`, conversation);
-          setConversations([...conversations, res.data]);
-          setCurrentChat(res.data);
-          console.log(res.data);
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    openConversation();
-  }, [selectFriend, user, apiURL, conversations]);
-
   return (
     <>
       <NavBar />
@@ -124,7 +80,7 @@ const Messenger = () => {
                   conversation={c}
                   isCurrent={c === currentChat}
                   currentUser={user}
-                  isGroup={false}
+                  isGroup={true}
                 />
               </div>
             ))}
@@ -138,10 +94,7 @@ const Messenger = () => {
                   {messages &&
                     messages.map((m) => (
                       <div ref={scrollRef}>
-                        <Message
-                          message={m}
-                          own={m.sender === user._id}
-                        />
+                        <Message message={m} own={m.sender === user._id} />
                       </div>
                     ))}
                 </div>
@@ -168,10 +121,8 @@ const Messenger = () => {
         </div>
         <div className="chatOnlineDiv">
           <div className="chatOnlineWrapper">
-            {allFriends.map((friend) => (
-              <div onClick={(e) => setSelectFriend(friend)}>
-                <ChatOnline user={friend} />
-              </div>
+            {currentChat?.members.map((memberId) => (
+              <GroupMember memberId={memberId} />
             ))}
           </div>
         </div>
@@ -180,4 +131,4 @@ const Messenger = () => {
   );
 };
 
-export default Messenger;
+export default GroupMessenger;

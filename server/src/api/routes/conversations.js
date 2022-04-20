@@ -1,23 +1,31 @@
 // Importing npm modules
 const express = require("express");
 
-// Importing message controller
+// Importing conversation controller
 const {
   createConversation,
   getConversation,
   getConversationWithIds,
+  getGroupConversation,
+  createGroupConversation,
 } = require("../controllers/conversationController");
 
 // Router
 const router = express.Router();
 
-// Create a message
+// Create a conversation
 router.post("/", createConversation);
 
-// Get a message
+// Create a group conversation
+router.post("/group", createGroupConversation);
+
+// Get conversations of particular user
 router.get("/:userId", getConversation);
 
-// Get a message
+// Get conversations of particular user
+router.get("/group/:userId", getGroupConversation);
+
+// Get conversation between 2 users
 router.get("/:firstId/:secondId", getConversationWithIds);
 
 module.exports = router;

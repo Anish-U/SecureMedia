@@ -15,11 +15,28 @@ const createConversation = async (req, res) => {
   }
 };
 
+// Function to create a group conversation
+const createGroupConversation = async (req, res) => {
+  const newConversation = new Conversation({
+    members: [...req.body.members],
+    isGroup: true,
+    groupName: req.body.groupName,
+  });
+
+  try {
+    const savedConversation = await newConversation.save();
+    res.status(200).json(savedConversation);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};
+
 // Function to get conversations using user id
 const getConversation = async (req, res) => {
   try {
     const conversation = await Conversation.find({
       members: { $in: [req.params.userId] },
+      isGroup: false,
     });
     res.status(200).json(conversation);
   } catch (err) {
@@ -27,6 +44,18 @@ const getConversation = async (req, res) => {
   }
 };
 
+// Function to get group conversations using user id
+const getGroupConversation = async (req, res) => {
+  try {
+    const conversation = await Conversation.find({
+      members: { $in: [req.params.userId] },
+      isGroup: true,
+    });
+    res.status(200).json(conversation);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};
 
 // Function to get conversations using user id
 const getConversationWithIds = async (req, res) => {
@@ -42,6 +71,8 @@ const getConversationWithIds = async (req, res) => {
 
 module.exports = {
   createConversation,
+  createGroupConversation,
   getConversation,
-  getConversationWithIds
+  getGroupConversation,
+  getConversationWithIds,
 };
