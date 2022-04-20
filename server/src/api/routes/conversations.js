@@ -9,6 +9,7 @@ const {
   getGroupConversation,
   createGroupConversation,
   getConversationUsingUser,
+  deleteGroupConversation,
 } = require("../controllers/conversationController");
 
 // Router
@@ -19,6 +20,9 @@ router.post("/", createConversation);
 
 // Create a group conversation
 router.post("/group", createGroupConversation);
+
+// Delete a group conversation
+router.delete("/:conversationId", deleteGroupConversation);
 
 // Get a conversation
 router.get("/convo/:conversationId", getConversation);

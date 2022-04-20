@@ -33,6 +33,35 @@ const createGroupConversation = async (req, res) => {
   }
 };
 
+// Function to delete a group conversation
+const deleteGroupConversation = async (req, res) => {
+  try {
+    // Get conversation using the id
+    const conversation = await Conversation.findById(req.params.conversationId);
+
+    // If conversation not found
+    if (conversation == null) {
+      res.status(403).json({ error: "No such conversation exists !" });
+      return;
+    }
+
+    if (conversation.groupAdmin === req.body.userId) {
+      // Deleting conversation
+      await conversation.deleteOne();
+      res.status(200).json("Conversation deleted successfully");
+    } else {
+      res.status(403).json({
+        error: "Unauthorized Actions! Only admins can delete conversation",
+      });
+      return;
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "Server Error" });
+  }
+};
+
+
 // Function to get conversations using user id
 const getConversationUsingUser = async (req, res) => {
   try {
@@ -86,6 +115,7 @@ const getConversationWithIds = async (req, res) => {
 module.exports = {
   createConversation,
   createGroupConversation,
+  deleteGroupConversation,
   getConversation,
   getGroupConversation,
   getConversationWithIds,

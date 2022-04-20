@@ -4,7 +4,7 @@ import { useState, useEffect, useContext, useRef } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
-import { Delete, Edit } from "@material-ui/icons";
+import { Delete } from "@material-ui/icons";
 
 import NavBar from "../../components/navBar/NavBar";
 import Conversation from "../../components/conversation/Conversation";
@@ -68,6 +68,28 @@ const GroupMessenger = () => {
       setNewMessage("");
     } catch (err) {
       console.log(err);
+    }
+  };
+
+  const deleteHandler = async () => {
+    if (window.confirm("Do you really want to delete this group ?")) {
+      try {
+        const data = {
+          userId: user._id,
+        };
+
+        await axios.delete(`${apiURL}conversation/${currentChat._id}`, {
+          data: data,
+        });
+
+        for (let i = 0; i < messages.length; i++) {
+          await axios.delete(`${apiURL}message/${messages[i]._id}`);
+        }
+
+        window.location.reload();
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
 
@@ -139,14 +161,10 @@ const GroupMessenger = () => {
                     >
                       <Edit htmlColor="#3a99d4" />
                     </Link> */}
-                    <Link
-                      to="/group/delete/"
-                      style={{ textDecoration: "none", color: "black" }}
-                    >
-                      <div className="chatOptionHeading">
-                        Delete Group ?<Delete htmlColor="#be1818" />
-                      </div>
-                    </Link>
+
+                    <div className="chatOptionHeading" onClick={deleteHandler}>
+                      Delete Group ?<Delete htmlColor="#be1818" />
+                    </div>
                   </div>
                 )}
                 <div className="members">
