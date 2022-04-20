@@ -4,6 +4,8 @@ import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
 import Messenger from "./pages/messenger/Messenger";
 import GroupMessenger from "./pages/groupMessenger/GroupMessenger";
+import NotFound from "./pages/404/NotFound";
+import GroupAdd from "./pages/groupAdd/GroupAdd";
 
 import {
   BrowserRouter as Router,
@@ -38,6 +40,11 @@ function App() {
           path="/group"
           element={!user ? <Navigate to="/" /> : <GroupMessenger />}
         />
+        <Route
+          path="/group/new"
+          element={!user ? <Navigate to="/" /> : <GroupAdd />}
+        />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
   );

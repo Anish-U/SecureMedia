@@ -1,72 +1,85 @@
 import "./leftBar.css";
-import {
-  RssFeed,
-  Chat,
-  PlayCircleFilledOutlined,
-  Group,
-  Bookmark,
-  HelpOutline,
-  WorkOutline,
-  Event,
-  School,
-} from "@material-ui/icons";
+import { Chat, Group, AddRounded, AccountCircle } from "@material-ui/icons";
+import { Link } from "react-router-dom";
+import { useState, useEffect, useContext } from "react";
+import axios from "axios";
+
+import { AuthContext } from "../../contexts/AuthContext";
 
 const LeftBar = () => {
-  
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+  const apiURL = process.env.REACT_APP_API_URL;
+
+  const [friends, setFriends] = useState([]);
+
+  const { user } = useContext(AuthContext);
+
+  useEffect(() => {
+    const getFriends = async () => {
+      try {
+        const friendList = await axios.get(`${apiURL}user/friends/${user._id}`);
+        setFriends(friendList.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getFriends();
+  }, [user, apiURL]);
 
   return (
     <div className="leftBar">
       <div className="leftBarWrapper">
         <ul className="leftBarList">
-          <li className="leftBarListItem">
-            <RssFeed className="leftBarIcon" />
-            <span className="leftBarListItemText">Feed</span>
-          </li>
-          <li className="leftBarListItem">
-            <Chat className="leftBarIcon" />
-            <span className="leftBarListItemText">Chats</span>
-          </li>
-          <li className="leftBarListItem">
-            <PlayCircleFilledOutlined className="leftBarIcon" />
-            <span className="leftBarListItemText">Videos</span>
-          </li>
-          <li className="leftBarListItem">
-            <Group className="leftBarIcon" />
-            <span className="leftBarListItemText">Groups</span>
-          </li>
-          <li className="leftBarListItem">
-            <Bookmark className="leftBarIcon" />
-            <span className="leftBarListItemText">Bookmarks</span>
-          </li>
-          <li className="leftBarListItem">
-            <HelpOutline className="leftBarIcon" />
-            <span className="leftBarListItemText">Questions</span>
-          </li>
-          <li className="leftBarListItem">
-            <WorkOutline className="leftBarIcon" />
-            <span className="leftBarListItemText">Jobs</span>
-          </li>
-          <li className="leftBarListItem">
-            <Event className="leftBarIcon" />
-            <span className="leftBarListItemText">Events</span>
-          </li>
-          <li className="leftBarListItem">
-            <School className="leftBarIcon" />
-            <span className="leftBarListItemText">Courses</span>
-          </li>
+          <Link
+            to={`/profile/${user.username}`}
+            style={{ textDecoration: "none", color: "black" }}
+          >
+            <li className="leftBarListItem">
+              <AccountCircle className="leftBarIcon" />
+              <span className="leftBarListItemText">My Profile</span>
+            </li>
+          </Link>
+          <Link
+            to="/messenger"
+            style={{ textDecoration: "none", color: "black" }}
+          >
+            <li className="leftBarListItem">
+              <Chat className="leftBarIcon" />
+              <span className="leftBarListItemText">Chats</span>
+            </li>
+          </Link>
+          <Link to="/group" style={{ textDecoration: "none", color: "black" }}>
+            <li className="leftBarListItem">
+              <Group className="leftBarIcon" />
+              <span className="leftBarListItemText">Groups</span>
+            </li>
+          </Link>
+          <Link
+            to="/group/new"
+            style={{ textDecoration: "none", color: "black" }}
+          >
+            <li className="leftBarListItem">
+              <AddRounded className="leftBarIcon" />
+              <span className="leftBarListItemText">New Group</span>
+            </li>
+          </Link>
         </ul>
-        <button className="leftBarButton">Show More</button>
         <hr className="leftBarHr" />
         <ul className="leftBarFriendList">
-          <li className="leftBarFriend">
-            <img
-              src={PF + "avatars/group/group1.png"}
-              alt=""
-              className="leftBarFriendImg"
-            />
-            <span className="leftBarFriendName">Jane Done</span>
-          </li>
+          {friends.map((friend) => (
+            <li className="leftBarFriend">
+              <img
+                src={
+                  friend.profilePicture
+                    ? PF + friend.profilePicture
+                    : PF + "avatars/group/group1.png"
+                }
+                alt=""
+                className="leftBarFriendImg"
+              />
+              <span className="leftBarFriendName">{friend.username}</span>
+            </li>
+          ))}
         </ul>
       </div>
     </div>

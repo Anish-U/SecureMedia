@@ -8,6 +8,7 @@ const {
   getConversationWithIds,
   getGroupConversation,
   createGroupConversation,
+  getConversationUsingUser,
 } = require("../controllers/conversationController");
 
 // Router
@@ -19,8 +20,11 @@ router.post("/", createConversation);
 // Create a group conversation
 router.post("/group", createGroupConversation);
 
+// Get a conversation
+router.get("/convo/:conversationId", getConversation);
+
 // Get conversations of particular user
-router.get("/:userId", getConversation);
+router.get("/:userId", getConversationUsingUser);
 
 // Get conversations of particular user
 router.get("/group/:userId", getGroupConversation);

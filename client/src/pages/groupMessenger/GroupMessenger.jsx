@@ -1,7 +1,10 @@
 import "./groupMessenger.css";
 
 import { useState, useEffect, useContext, useRef } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
+
+import { Delete, Edit } from "@material-ui/icons";
 
 import NavBar from "../../components/navBar/NavBar";
 import Conversation from "../../components/conversation/Conversation";
@@ -84,6 +87,11 @@ const GroupMessenger = () => {
                 />
               </div>
             ))}
+            <Link to="/group/new" style={{ textDecoration: "none" }}>
+              <div className="newGroupButton">
+                <span> + Create New Group</span>
+              </div>
+            </Link>
           </div>
         </div>
         <div className="chatBox">
@@ -121,9 +129,34 @@ const GroupMessenger = () => {
         </div>
         <div className="chatOnlineDiv">
           <div className="chatOnlineWrapper">
-            {currentChat?.members.map((memberId) => (
-              <GroupMember memberId={memberId} />
-            ))}
+            {currentChat && (
+              <>
+                {currentChat?.groupAdmin === user._id && (
+                  <div className="chatOptions">
+                    {/* <Link
+                      to={`/group/edit/${currentChat._id}`}
+                      style={{ textDecoration: "none", color: "black" }}
+                    >
+                      <Edit htmlColor="#3a99d4" />
+                    </Link> */}
+                    <Link
+                      to="/group/delete/"
+                      style={{ textDecoration: "none", color: "black" }}
+                    >
+                      <div className="chatOptionHeading">
+                        Delete Group ?<Delete htmlColor="#be1818" />
+                      </div>
+                    </Link>
+                  </div>
+                )}
+                <div className="members">
+                  <span className="membersHeading">Members</span>
+                  {currentChat?.members.map((memberId) => (
+                    <GroupMember memberId={memberId} />
+                  ))}
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>

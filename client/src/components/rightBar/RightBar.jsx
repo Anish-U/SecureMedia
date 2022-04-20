@@ -13,10 +13,25 @@ const RightBar = ({ user }) => {
   const apiURL = process.env.REACT_APP_API_URL;
 
   const [friends, setFriends] = useState([]);
+  const [conversations, setConversations] = useState([]);
 
   const { user: currentUser, dispatch } = useContext(AuthContext);
 
   const [followed, setFollowed] = useState(false);
+
+  useEffect(() => {
+    const getConversations = async () => {
+      try {
+        const res = await axios.get(
+          `${apiURL}conversation/group/${currentUser?._id}`
+        );
+        setConversations(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getConversations();
+  }, [currentUser, apiURL]);
 
   useEffect(() => {
     const getFriends = async () => {
@@ -65,12 +80,11 @@ const RightBar = ({ user }) => {
 
         <hr className="rightBarHr" />
 
-        <h4 className="rightBarTitle">Online Friends</h4>
+        <h4 className="rightBarTitle">Your Groups</h4>
         <ul className="rightBarFriendList">
-          <Online />
-          <Online />
-          <Online />
-          <Online />
+          {conversations.map((c) => (
+            <Online group={c}/>
+          ))}
         </ul>
       </>
     );

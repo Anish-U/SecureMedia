@@ -38,6 +38,25 @@
   text-transform: capitalize;
 }
 
+.chatOptions {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin-bottom: 10px;
+}
+
+.members {
+  padding: 10px 0;
+}
+
+.membersHeading {
+  font-size: 22px;
+  font-weight: 500;
+  color: #5467d5;
+  margin-bottom: 10px;
+  padding-left: 10px;
+}
+
 @media screen and (max-width: 768px) {
   .chatOnlineName {
     display: none;

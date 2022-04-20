@@ -21,6 +21,8 @@ const createGroupConversation = async (req, res) => {
     members: [...req.body.members],
     isGroup: true,
     groupName: req.body.groupName,
+    groupAdmin: req.body.groupAdmin,
+    groupPicture: req.body.groupPicture
   });
 
   try {
@@ -32,11 +34,23 @@ const createGroupConversation = async (req, res) => {
 };
 
 // Function to get conversations using user id
-const getConversation = async (req, res) => {
+const getConversationUsingUser = async (req, res) => {
   try {
     const conversation = await Conversation.find({
       members: { $in: [req.params.userId] },
       isGroup: false,
+    });
+    res.status(200).json(conversation);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};
+
+// Function to get conversations using conversation id
+const getConversation = async (req, res) => {
+  try {
+    const conversation = await Conversation.find({
+      _id: { $in: [req.params.conversationId] },
     });
     res.status(200).json(conversation);
   } catch (err) {
@@ -75,4 +89,5 @@ module.exports = {
   getConversation,
   getGroupConversation,
   getConversationWithIds,
+  getConversationUsingUser,
 };

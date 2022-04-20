@@ -61,9 +61,15 @@
 }
 
 .leftBarFriendImg {
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   object-fit: cover;
   margin-right: 10px;
+}
+
+.leftBarFriendName {
+  font-size: 15px;
+  font-weight: 500;
+  text-transform: capitalize;
 }

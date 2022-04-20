@@ -9,6 +9,10 @@ const ConversationSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    groupAdmin: {
+      type: String,
+      default: "",
+    },
     groupName: {
       type: String,
       default: "",

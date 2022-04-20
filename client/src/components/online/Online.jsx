@@ -1,6 +1,6 @@
 import "./online.css";
 
-const Online = () => {
+const Online = ({ group }) => {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
 
   return (
@@ -8,12 +8,16 @@ const Online = () => {
       <div className="rightBarProfileImgContainer">
         <img
           className="rightBarProfileImg"
-          src={PF + "avatars/group/group3.png"}
+          src={
+            group.groupPicture
+              ? PF + group?.groupPicture
+              : PF + "avatars/group/group3.png"
+          }
           alt=""
         />
-        <span className="rightBarOnline"></span>
+        {/* <span className="rightBarOnline"></span> */}
       </div>
-      <span className="rightBarUsername">Safax</span>
+      <span className="rightBarUsername">{group?.groupName}</span>
     </li>
   );
 };
