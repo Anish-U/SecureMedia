@@ -5,12 +5,15 @@ import { useContext, useState, useEffect } from "react";
 import axios from "axios";
 
 import { AuthContext } from "../../contexts/AuthContext";
+import AesCtr from "../../helpers/aes-ctr";
+import { decrypt } from "../../helpers/rsa";
 
-const Message = ({ message, own }) => {
+const Message = ({ message, own, isGroup }) => {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const apiURL = process.env.REACT_APP_API_URL;
 
   const [sender, setSender] = useState(null);
+  const [msg, setMsg] = useState("");
 
   useEffect(() => {
     const getSender = async () => {
@@ -23,7 +26,21 @@ const Message = ({ message, own }) => {
       }
     };
     getSender();
-  }, [message, own, apiURL]);
+
+    if (!isGroup) {
+      const cipherText = message.text.split(",");
+      let numArray = [];
+
+      for (var i = 0; i < cipherText.length; i++)
+        numArray.push(parseInt(cipherText[i]));
+
+      const decryptedMsg = decrypt(numArray).join("");
+      setMsg(decryptedMsg);
+    } else {
+      const plainText = AesCtr.decrypt(message.text, "password", 256);
+      setMsg(plainText);
+    }
+  }, [message, own, apiURL, isGroup]);
 
   return (
     <div className={own ? "message own" : "message"}>
@@ -39,7 +56,7 @@ const Message = ({ message, own }) => {
             alt=""
           />
         )}
-        <p className="messageText">{message.text}</p>
+        <p className="messageText">{msg}</p>
       </div>
       <div className="messageBottom">
         {!own && <span>{sender?.username}</span>}

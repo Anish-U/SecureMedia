@@ -11,6 +11,7 @@ import Conversation from "../../components/conversation/Conversation";
 import Message from "../../components/message/Message";
 import { AuthContext } from "../../contexts/AuthContext";
 import GroupMember from "../../components/groupMember/GroupMember";
+import AesCtr from "../../helpers/aes-ctr";
 
 const GroupMessenger = () => {
   const [conversations, setConversations] = useState([]);
@@ -55,9 +56,14 @@ const GroupMessenger = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const cipherText = AesCtr.encrypt(newMessage, "password", 256);
+
+    console.log(cipherText)
+
     const message = {
       sender: user._id,
-      text: newMessage,
+      text: cipherText,
       conversationId: currentChat._id,
     };
 
@@ -124,7 +130,11 @@ const GroupMessenger = () => {
                   {messages &&
                     messages.map((m) => (
                       <div ref={scrollRef}>
-                        <Message message={m} own={m.sender === user._id} />
+                        <Message
+                          message={m}
+                          own={m.sender === user._id}
+                          isGroup={true}
+                        />
                       </div>
                     ))}
                 </div>

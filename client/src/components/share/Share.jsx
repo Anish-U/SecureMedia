@@ -4,10 +4,12 @@ import { useContext, useRef, useState } from "react";
 import axios from "axios";
 
 import { AuthContext } from "../../contexts/AuthContext";
+import { encryptByDES } from "../../helpers/des";
 
 const Share = () => {
   const apiURL = process.env.REACT_APP_API_URL;
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+  const key = process.env.REACT_APP_DES_KEY;
 
   const { user } = useContext(AuthContext);
 
@@ -17,9 +19,10 @@ const Share = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
 
+    const cipherText = encryptByDES(desc.current.value, key);
     const newPost = {
       userId: user._id,
-      desc: desc.current.value,
+      desc: cipherText,
     };
 
     if (file) {

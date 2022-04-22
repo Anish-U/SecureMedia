@@ -8,6 +8,7 @@ import Conversation from "../../components/conversation/Conversation";
 import Message from "../../components/message/Message";
 import ChatOnline from "../../components/chatOnline/ChatOnline";
 import { AuthContext } from "../../contexts/AuthContext";
+import {encrypt} from "../../helpers/rsa"
 
 const Messenger = () => {
   const [conversations, setConversations] = useState([]);
@@ -71,9 +72,13 @@ const Messenger = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const cipherText = encrypt(newMessage).toString();
+    
+
     const message = {
       sender: user._id,
-      text: newMessage,
+      text: cipherText,
       conversationId: currentChat._id,
     };
 
@@ -141,6 +146,7 @@ const Messenger = () => {
                         <Message
                           message={m}
                           own={m.sender === user._id}
+                          isGroup={false}
                         />
                       </div>
                     ))}

@@ -7,16 +7,19 @@ import axios from "axios";
 import { format } from "timeago.js";
 
 import { AuthContext } from "../../contexts/AuthContext";
+import { decryptByDES } from "../../helpers/des";
 
 const Post = ({ post }) => {
   const [like, setLike] = useState(post.likes.length);
   const [isLiked, setIsLiked] = useState(false);
   const [user, setUser] = useState({});
+  const [desc, setDesc] = useState("");
 
   const [options, setOptions] = useState(false);
 
   const apiURL = process.env.REACT_APP_API_URL;
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+  const key = process.env.REACT_APP_DES_KEY;
 
   const { user: currentUser } = useContext(AuthContext);
 
@@ -31,7 +34,12 @@ const Post = ({ post }) => {
       setUser(res.data);
     };
     fetchUser();
-  }, [post.userId, apiURL]);
+
+    const plainText = decryptByDES(post.desc, key);
+
+    setDesc(plainText)
+
+  }, [post, apiURL, key]);
 
   const likeHandler = () => {
     try {
@@ -91,9 +99,9 @@ const Post = ({ post }) => {
             )}
             {options && (
               <div className="postOptions">
-                <div className="postOption" onClick={editHandler}>
+                {/* <div className="postOption" onClick={editHandler}>
                   Edit
-                </div>
+                </div> */}
                 <div className="postOption" onClick={deleteHandler}>
                   Delete
                 </div>
@@ -102,7 +110,7 @@ const Post = ({ post }) => {
           </div>
         </div>
         <div className="postCenter">
-          <span className="postText">{post.desc}</span>
+          <span className="postText">{desc}</span>
           {post.img ? (
             <img className="postImg" src={`${PF}posts/${post.img}`} alt="" />
           ) : (
