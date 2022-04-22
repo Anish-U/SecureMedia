@@ -2,7 +2,6 @@ import "./navBar.css";
 
 import {
   Search,
-  Person,
   Chat,
   ExitToApp,
   Settings,
@@ -16,7 +15,13 @@ import { AuthContext } from "../../contexts/AuthContext";
 
 const NavBar = () => {
   const { user } = useContext(AuthContext);
+
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+
+  const logOutHandler = () => {
+    localStorage.clear();
+    window.location.reload()
+  }
 
   return (
     <div className="navBarContainer">
@@ -71,12 +76,12 @@ const NavBar = () => {
             </Link>
           </div>
           <div className="navBarIconItem">
-            <Link
+            {/* <Link
               to="/logout"
               style={{ textDecoration: "none", color: "white" }}
-            >
-              <ExitToApp />
-            </Link>
+            > */}
+              <ExitToApp onClick={logOutHandler}/>
+            {/* </Link> */}
           </div>
         </div>
         <Link to={`/profile/${user.username}`}>
