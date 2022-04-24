@@ -134,6 +134,7 @@ const GroupMessenger = () => {
                           message={m}
                           own={m.sender === user._id}
                           isGroup={true}
+                          isSecret={false}
                         />
                       </div>
                     ))}

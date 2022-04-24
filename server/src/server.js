@@ -23,7 +23,9 @@ const authRouter = require("./api/routes/auth");
 const userRouter = require("./api/routes/users");
 const postRouter = require("./api/routes/posts");
 const messageRouter = require("./api/routes/messages");
+const secretMessageRouter = require("./api/routes/secretMessages");
 const conversationRouter = require("./api/routes/conversations");
+const secretConversationRouter = require("./api/routes/secretConversations");
 
 /*
 		MOUNTING MIDDLEWARES FUNCTIONS
@@ -53,7 +55,9 @@ app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
 app.use("/api/post", postRouter);
 app.use("/api/message", messageRouter);
+app.use("/api/secretMessage", secretMessageRouter);
 app.use("/api/conversation", conversationRouter);
+app.use("/api/secretConversation", secretConversationRouter);
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {

@@ -4,6 +4,7 @@ import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
 import Messenger from "./pages/messenger/Messenger";
 import GroupMessenger from "./pages/groupMessenger/GroupMessenger";
+import SecretMessenger from "./pages/secretMessenger/SecretMessenger";
 import NotFound from "./pages/404/NotFound";
 import GroupAdd from "./pages/groupAdd/GroupAdd";
 
@@ -31,6 +32,10 @@ function App() {
         <Route
           path="/messenger"
           element={!user ? <Navigate to="/" /> : <Messenger />}
+        />
+        <Route
+          path="/secretMessenger"
+          element={!user ? <Navigate to="/" /> : <SecretMessenger />}
         />
         <Route
           path="/profile/:username"

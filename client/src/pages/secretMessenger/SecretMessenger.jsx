@@ -1,4 +1,4 @@
-import "./messenger.css";
+import "./secretMessenger.css";
 
 import { useState, useEffect, useContext, useRef } from "react";
 import axios from "axios";
@@ -10,7 +10,7 @@ import ChatOnline from "../../components/chatOnline/ChatOnline";
 import { AuthContext } from "../../contexts/AuthContext";
 import {encrypt} from "../../helpers/rsa"
 
-const Messenger = () => {
+const SecretMessenger = () => {
   const [conversations, setConversations] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
   const [messages, setMessages] = useState([]);
@@ -31,7 +31,7 @@ const Messenger = () => {
   useEffect(() => {
     const getConversations = async () => {
       try {
-        const res = await axios.get(`${apiURL}conversation/${user?._id}`);
+        const res = await axios.get(`${apiURL}secretConversation/${user?._id}`);
         // console.log(res.data);
         setConversations(res.data);
       } catch (err) {
@@ -45,7 +45,7 @@ const Messenger = () => {
 
     const getMessages = async () => {
       try {
-        const res = await axios.get(`${apiURL}message/${currentChat?._id}`);
+        const res = await axios.get(`${apiURL}secretMessage/${currentChat?._id}`);
         // console.log(res.data);
         setMessages(res.data);
 
@@ -83,7 +83,7 @@ const Messenger = () => {
     };
 
     try {
-      const res = await axios.post(`${apiURL}message/`, message);
+      const res = await axios.post(`${apiURL}secretMessage/`, message);
       console.log(res.data);
       setMessages([...messages], res.data);
       setNewMessage("");
@@ -96,7 +96,7 @@ const Messenger = () => {
     const openConversation = async () => {
       try {
         const res = await axios.get(
-          `${apiURL}conversation/${user?._id}/${selectFriend?._id}`
+          `${apiURL}secretConversation/${user?._id}/${selectFriend?._id}`
         );
         if (res.data.length) {
           setCurrentChat(res.data[0]);
@@ -105,7 +105,7 @@ const Messenger = () => {
             senderId: user._id,
             receiverId: selectFriend._id,
           };
-          const res = await axios.post(`${apiURL}conversation`, conversation);
+          const res = await axios.post(`${apiURL}secretConversation`, conversation);
           setConversations([...conversations, res.data]);
           setCurrentChat(res.data);
           console.log(res.data);
@@ -147,7 +147,7 @@ const Messenger = () => {
                           message={m}
                           own={m.sender === user._id}
                           isGroup={false}
-                          isSecret={false}
+													isSecret={true}
                         />
                       </div>
                     ))}
@@ -187,4 +187,4 @@ const Messenger = () => {
   );
 };
 
-export default Messenger;
+export default SecretMessenger;

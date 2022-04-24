@@ -44,3 +44,10 @@
   background-color: #f5f1f1;
   color: #000;
 }
+
+.secretImg {
+  height: 100px;
+  width: 200px;
+  object-fit: cover;
+  border-radius: 10px;
+}

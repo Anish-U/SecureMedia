@@ -1,5 +1,5 @@
 const power = (a, b) => {
-	if(b == 0)
+	if(b === 0)
 			return 1;
 
 	let pow = 1
@@ -12,7 +12,7 @@ const power = (a, b) => {
 
 
 const powerMod = (a, b, c) => {
-	if(b == 0)
+	if(b === 0)
 			return 1;
 
 	let pow = 1
@@ -41,7 +41,7 @@ const primesInRange = (x, y) => {
 
 const keyGeneration = (p, g) => {
 	var privateKey, publicKey;
-  privateKey = random.randint(2, p - 1);
+  privateKey = Math.random.randint(2, p - 1);
   publicKey = powerMod(g, privateKey, p);
   return [publicKey, privateKey];
 }  
@@ -49,7 +49,7 @@ const keyGeneration = (p, g) => {
 const encryption = (p, g, publicKey, message) => {
   var c1, c2, ct, k;
 
-  k = random.randint(2, p - 1);
+  k = Math.random.randint(2, p - 1);
   
 	ct = [];
   
@@ -74,7 +74,7 @@ function decryption(p, privateKey, c1, c2) {
   pt = [];
 
   for (var i = 0, _pj_a = c2.length; i < _pj_a; i += 1) {
-    pt.append(chr(Number.parseInt(c2[i] / x)));
+    pt.append(String(Number.parseInt(c2[i] / x)));
   }
 
   plainText = "".join(pt);

@@ -7,6 +7,7 @@ import {
   Settings,
   Home,
   Group,
+  Security
 } from "@material-ui/icons";
 import { useContext } from "react";
 import { Link } from "react-router-dom";
@@ -61,15 +62,15 @@ const NavBar = () => {
           </div>
           <div className="navBarIconItem">
             <Link
-              to="/messenger"
+              to="/secretMessenger"
               style={{ textDecoration: "none", color: "white" }}
             >
-              <Chat />
+              <Security />
             </Link>
           </div>
           <div className="navBarIconItem">
             <Link
-              to="/settings"
+              to="/"
               style={{ textDecoration: "none", color: "white" }}
             >
               <Settings />

@@ -8,9 +8,10 @@ import { AuthContext } from "../../contexts/AuthContext";
 import AesCtr from "../../helpers/aes-ctr";
 import { decrypt } from "../../helpers/rsa";
 
-const Message = ({ message, own, isGroup }) => {
+const Message = ({ message, own, isGroup, isSecret }) => {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const apiURL = process.env.REACT_APP_API_URL;
+  const secretImg = process.env.REACT_APP_SECRET_IMG;
 
   const [sender, setSender] = useState(null);
   const [msg, setMsg] = useState("");
@@ -27,7 +28,10 @@ const Message = ({ message, own, isGroup }) => {
     };
     getSender();
 
-    if (!isGroup) {
+    if (isGroup) {
+      const plainText = AesCtr.decrypt(message.text, "password", 256);
+      setMsg(plainText);
+    } else {
       const cipherText = message.text.split(",");
       let numArray = [];
 
@@ -36,11 +40,12 @@ const Message = ({ message, own, isGroup }) => {
 
       const decryptedMsg = decrypt(numArray).join("");
       setMsg(decryptedMsg);
-    } else {
-      const plainText = AesCtr.decrypt(message.text, "password", 256);
-      setMsg(plainText);
     }
-  }, [message, own, apiURL, isGroup]);
+  }, [message, own, apiURL, isGroup, isSecret]);
+
+  const showMsg = () => {
+    alert("Message states: " + msg);
+  };
 
   return (
     <div className={own ? "message own" : "message"}>
@@ -56,7 +61,15 @@ const Message = ({ message, own, isGroup }) => {
             alt=""
           />
         )}
-        <p className="messageText">{msg}</p>
+        {!isSecret && <p className="messageText">{msg}</p>}
+        {isSecret && (
+          <img
+            src={"data:image/png;base64," + secretImg}
+            alt=""
+            className="secretImg"
+            onClick={showMsg}
+          />
+        )}
       </div>
       <div className="messageBottom">
         {!own && <span>{sender?.username}</span>}

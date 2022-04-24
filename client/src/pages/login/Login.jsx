@@ -12,7 +12,7 @@ const Login = () => {
   const email = useRef();
   const password = useRef();
 
-  const { isFetching, dispatch } = useContext(AuthContext);
+  const { isFetching, dispatch, error } = useContext(AuthContext);
 
   const handleClick = (e) => {
     e.preventDefault();
@@ -23,6 +23,10 @@ const Login = () => {
       },
       dispatch
     );
+    console.log(error, dispatch);
+    if(error) {
+      alert("Invalid email and password combination");
+    }
   };
 
   return (
