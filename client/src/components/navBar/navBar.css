@@ -32,6 +32,52 @@
   border-radius: 30px;
   display: flex;
   align-items: center;
+  position: relative;
+}
+
+.searchResults {
+  position: absolute;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  top: 31px;
+  z-index: 99;
+  background-color: #f2f2f2;
+  border-radius: 10px;
+}
+
+.result {
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #6371bf;
+}
+
+.result:last-child {
+  border: none;
+}
+
+.resultImg {
+  height: 40px;
+  width: 40px;
+  object-fit: cover;
+  margin: 0 25px;
+}
+
+.resultName {
+  margin: 0 25px;
+  font-weight: 500;
+  font-size: 14px;
+  width: 300px;
+}
+
+.resultLink {
+  color: #6371bf;
+  text-decoration: none;
+  margin: 0 10px;
+  font-weight: 500;
+  cursor: pointer;
+  font-size: 14px;
 }
 
 .searchIcon {

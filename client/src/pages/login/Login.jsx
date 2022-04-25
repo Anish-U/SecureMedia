@@ -2,11 +2,11 @@ import "./login.css";
 
 import { useContext, useRef } from "react";
 import { Link } from "react-router-dom";
+import { CircularProgress } from "@material-ui/core";
 
 import { loginCall } from "../../apiCalls";
 import { AuthContext } from "../../contexts/AuthContext";
-
-import { CircularProgress } from "@material-ui/core";
+import { loginSchema } from "../../validations/LoginValidation";
 
 const Login = () => {
   const email = useRef();
@@ -14,18 +14,33 @@ const Login = () => {
 
   const { isFetching, dispatch, error } = useContext(AuthContext);
 
-  const handleClick = (e) => {
+  const handleClick = async (e) => {
     e.preventDefault();
-    loginCall(
-      {
-        email: email.current.value,
-        password: password.current.value,
-      },
-      dispatch
-    );
-    console.log(error, dispatch);
-    if(error) {
-      alert("Invalid email and password combination");
+
+    let formData = {
+      email: email.current.value,
+      password: password.current.value,
+    };
+
+    let isValid;
+
+    try {
+      isValid = await loginSchema.isValid(formData);
+      const validate = await loginSchema.validate(formData);
+      console.log(validate);
+    } catch (error) {
+      alert(error.message);
+    }
+
+    if (isValid) {
+      loginCall(
+        {
+          email: email.current.value,
+          password: password.current.value,
+        },
+        dispatch
+      );
+      alert(error);
     }
   };
 

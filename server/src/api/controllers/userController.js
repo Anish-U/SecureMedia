@@ -29,19 +29,41 @@ const getUser = async (req, res) => {
   }
 };
 
+// Function to get a user
+const getSearch = async (req, res) => {
+  const username = req.params.username;
+
+  try {
+    // Find user by id
+    const users = await User.find({ username: { $regex: '.*' + username + '.*' } });
+
+    let userList = [];
+
+    users.map((user) => {
+      const { _id, username, profilePicture } = user;
+      userList.push({ _id, username, profilePicture });
+    });
+
+    res.status(200).json(userList);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "Server Error" });
+  }
+};
+
 // Function to get friends
 const getFriends = async (req, res) => {
   try {
     const user = await User.findById(req.params.userId);
-    
+
     const friends = await Promise.all(
       user.followings.map((friendId) => {
         return User.findById(friendId);
       })
     );
-    
+
     let friendList = [];
-    
+
     friends.map((friend) => {
       const { _id, username, profilePicture } = friend;
       friendList.push({ _id, username, profilePicture });
@@ -121,4 +143,4 @@ const deleteUser = async (req, res) => {
   }
 };
 
-module.exports = { getUser, getFriends, updateUser, deleteUser };
+module.exports = { getUser, getFriends, updateUser, deleteUser, getSearch };

@@ -5,6 +5,8 @@ import axios from "axios";
 import { useRef } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
+import { registerSchema } from "../../validations/RegisterValidation";
+
 const Register = () => {
   const email = useRef();
   const username = useRef();
@@ -20,18 +22,36 @@ const Register = () => {
     if (confirmPassword.current.value !== password.current.value) {
       confirmPassword.current.setCustomValidity("Passwords don't match!");
     } else {
-      const user = {
+      let formData = {
         username: username.current.value,
         email: email.current.value,
         password: password.current.value,
-        gender: gender.current.value,
       };
+
+      let isValid;
+
       try {
-        const res = await axios.post(`${apiURL}auth/register`, user);
-        console.log(res);
-        history("/login");
-      } catch (err) {
-        console.log(err);
+        isValid = await registerSchema.isValid(formData);
+        const validate = await registerSchema.validate(formData);
+        console.log(validate);
+      } catch (error) {
+        alert(error.message);
+      }
+
+      if (isValid) {
+        const user = {
+          username: username.current.value,
+          email: email.current.value,
+          password: password.current.value,
+          gender: gender.current.value,
+        };
+        try {
+          const res = await axios.post(`${apiURL}auth/register`, user);
+          console.log(res);
+          history("/login");
+        } catch (err) {
+          console.log(err);
+        }
       }
     }
   };
@@ -52,6 +72,7 @@ const Register = () => {
               className="registerInput"
               ref={username}
               required
+              minLength="4"
             />
             <input
               type="email"

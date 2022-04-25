@@ -7,10 +7,11 @@ import {
   Settings,
   Home,
   Group,
-  Security
+  Security,
 } from "@material-ui/icons";
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 import { AuthContext } from "../../contexts/AuthContext";
 
@@ -18,11 +19,34 @@ const NavBar = () => {
   const { user } = useContext(AuthContext);
 
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+  const apiURL = process.env.REACT_APP_API_URL;
+
+  const [searching, setSearching] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchUsers, setSearchUsers] = useState([]);
 
   const logOutHandler = () => {
     localStorage.clear();
-    window.location.reload()
-  }
+    window.location.reload();
+  };
+
+  const profileHandler = (username) => {
+    console.log(username);
+  };
+
+  useEffect(() => {
+    const searchFunc = async () => {
+      setSearching(true);
+      if (searchQuery.length !== 0) {
+        const res = await axios.get(`${apiURL}user/search/${searchQuery}`);
+
+        const userList = res.data;
+
+        setSearchUsers(userList);
+      }
+    };
+    searchFunc();
+  }, [searchQuery, apiURL]);
 
   return (
     <div className="navBarContainer">
@@ -34,7 +58,35 @@ const NavBar = () => {
       <div className="navBarCenter">
         <div className="searchBar">
           <Search className="searchIcon" />
-          <input placeholder="Search for friends" className="searchInput" />
+          <input
+            placeholder="Search for friends"
+            className="searchInput"
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          {searching && searchQuery.length !== 0 && (
+            <div className="searchResults">
+              {searchUsers.map((u) => (
+                <div className="result" key={u._id}>
+                  <img
+                    src={
+                      u.profilePicture
+                        ? PF + u.profilePicture
+                        : PF + "avatars/noAvatar.png"
+                    }
+                    alt=""
+                    className="resultImg"
+                  />
+                  <span className="resultName">{u.username}</span>
+                  <Link
+                    to={`/profile/${u.username}`}
+                    style={{ textDecoration: "none" }}
+                  >
+                    <span className="resultLink">View Profile</span>
+                  </Link>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
       <div className="navBarRight">
@@ -69,10 +121,7 @@ const NavBar = () => {
             </Link>
           </div>
           <div className="navBarIconItem">
-            <Link
-              to="/"
-              style={{ textDecoration: "none", color: "white" }}
-            >
+            <Link to="/" style={{ textDecoration: "none", color: "white" }}>
               <Settings />
             </Link>
           </div>
@@ -81,7 +130,7 @@ const NavBar = () => {
               to="/logout"
               style={{ textDecoration: "none", color: "white" }}
             > */}
-              <ExitToApp onClick={logOutHandler}/>
+            <ExitToApp onClick={logOutHandler} />
             {/* </Link> */}
           </div>
         </div>
